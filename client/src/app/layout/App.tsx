@@ -1,43 +1,45 @@
-import { Container, CssBaseline, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import {
+  Container,
+  createTheme,
+  CssBaseline,
+  ThemeProvider,
+} from "@mui/material";
+import { useState } from "react";
+import { Route } from "react-router-dom";
+import AboutPage from "../../features/about/AboutPage";
 import Catalog from "../../features/catalog/catalog";
+import ProductDetails from "../../features/catalog/ProductDetails";
+import ContactPage from "../../features/contact/ContactPage";
+import HomePage from "../../features/home/HomePage";
 import Header from "../layout/Header";
-import { Product } from "../models/Product";
 
 function App() {
-  const [products, setProducts] = useState<Product[]>([]);
-
-  useEffect(() => {
-    fetch("http://localhost:5000/api/products")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setProducts(data);
-      });
-  }, []);
-
-  function addProduct() {
-    setProducts((prevState) => [
-      ...prevState,
-      {
-        id: prevState.length + 101,
-        name: "product" + (prevState.length + 1),
-        price: prevState.length * 100 + 100,
-        description: "description 1",
-        pictureUrl: "http://local",
-        brand: "brand1",
+  const [darkMode, setDarkMode] = useState(false);
+  const paletteType = darkMode ? "dark" : "light";
+  const theme = createTheme({
+    palette: {
+      mode: paletteType,
+      background: {
+        default: paletteType === "light" ? "#eaeaea" : "#121212",
       },
-    ]);
-  }
+    },
+  });
 
+  function handleThemeChange() {
+    setDarkMode(!darkMode);
+  }
   return (
-    <>
-    <CssBaseline />
-      <Header />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Header darkMode={darkMode} handleThemeChange={handleThemeChange} />
       <Container>
-      <Catalog products={products} addProduct={addProduct} />
+        <Route exact path="/" component={HomePage} />
+        <Route path="/about" component={AboutPage} />
+        <Route path="/contact" component={ContactPage} />
+        <Route exact path="/catalog" component={Catalog} />
+        <Route path="/catalog/:id" component={ProductDetails} />
       </Container>
-    </>
+    </ThemeProvider>
   );
 }
 
