@@ -14,6 +14,7 @@ import { useParams } from "react-router-dom";
 import agent from "../../app/api/agent";
 import { Product } from "../../app/models/Product";
 import NotFound from "../../app/errors/NotFound";
+import LoadingComponent from "../../app/layout/LoadingComponent";
 
 export default function ProductDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -27,7 +28,7 @@ export default function ProductDetailsPage() {
       .finally(() => setLoadnig(false));
   }, [id]);
 
-  if (loading) return <h3>loading ...</h3>;
+  if (loading) return <LoadingComponent message="loading details ..." />;
   if (!product) return <NotFound />;
   return (
     <Grid container spacing={6}>
