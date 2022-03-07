@@ -29,13 +29,21 @@ namespace API.Controllers
 
         [HttpPost]
         public async Task<ActionResult> AddItemToBasket(int productId, int quantity){
+            //get basket
+            //create the basket
+            //product
+            //add item
+            //save changes
             return StatusCode(201);
         }
 
 
         [HttpDelete]
-        public async Task<ActionResult> AddItemToBasket(){
-            return StatusCode(200);
+        public async Task<ActionResult> RemoveBasketItem(int productId, int quantity){
+            //get basket
+            //remove item or reduce quantity
+            //save changes
+            return Ok();//test
         }
 
     }
